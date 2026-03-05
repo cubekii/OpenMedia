@@ -1,0 +1,18 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 907dba8..2ff1031 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,4 +1,4 @@
+-cmake_minimum_required(VERSION 3.0)
++cmake_minimum_required(VERSION 3.20)
+ 
+ # Extract project version from configure.ac
+ file(READ configure.ac CONFIGURE_AC_CONTENTS)
+@@ -12,7 +12,6 @@ include(CheckIncludeFiles)
+ include(CMakePackageConfigHelpers)
+ 
+ # Build options
+-option(BUILD_SHARED_LIBS "Build shared library" OFF)
+ if(APPLE)
+     option(BUILD_FRAMEWORK "Build Framework bundle for OSX" OFF)
+ endif()
