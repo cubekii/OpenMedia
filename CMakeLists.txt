@@ -126,6 +126,7 @@ if (OPENMEDIA_FFMPEG)
 
         target_sources(OpenMedia PRIVATE src/avcodec.cpp)
         target_sources(OpenMedia PRIVATE src/avformat.cpp)
+        target_compile_definitions(OpenMedia PRIVATE OPENMEDIA_FFMPEG)
     endif ()
 endif ()
 
