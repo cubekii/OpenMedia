@@ -100,16 +100,28 @@ void registerBuiltInCodecs(CodecRegistry* registry) noexcept {
   if (!registry) return;
 
   // Audio codecs
+#if defined(OPENMEDIA_PCM_S16LE)
   registry->registerCodec(&CODEC_PCM_S16LE);
+#endif
   registry->registerCodec(&CODEC_PCM_F32LE);
+#if defined(OPENMEDIA_ALAC)
   registry->registerCodec(&CODEC_ALAC);
+#endif
 #if defined(OPENMEDIA_FDK_AAC)
   registry->registerCodec(&CODEC_FDK_AAC);
 #endif
+#if defined(OPENMEDIA_MP3)
   registry->registerCodec(&CODEC_MP3);
+#endif
+#if defined(OPENMEDIA_FLAC)
   registry->registerCodec(&CODEC_FLAC);
+#endif
+#if defined(OPENMEDIA_VORBIS)
   registry->registerCodec(&CODEC_VORBIS);
+#endif
+#if defined(OPENMEDIA_OPUS)
   registry->registerCodec(&CODEC_OPUS);
+#endif
 #if defined(_WIN32)
   registry->registerCodec(&CODEC_WMF);
 #endif
