@@ -16,31 +16,26 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        # Ubuntu x86-64
-        - os: ubuntu-latest
-          compiler: GCC
-        - os: ubuntu-latest
-          compiler: Clang
+          # Ubuntu x86-64
+          - { os: ubuntu-latest,     compiler: GCC }
+          - { os: ubuntu-latest,     compiler: Clang }
 
-        # Ubuntu ARM64
-        - os: ubuntu-24.04-arm
-          compiler: GCC
-        - os: ubuntu-24.04-arm
-          compiler: Clang
+          # Ubuntu ARM64
+          - { os: ubuntu-24.04-arm,  compiler: GCC }
+          - { os: ubuntu-24.04-arm,  compiler: Clang }
 
-        # Windows x86-64
-        - os: windows-latest
-          compiler: MSVC
-        - os: windows-latest
-          compiler: MinGW
+          # Windows x86-64
+          - { os: windows-latest,    compiler: MSVC }
+          - { os: windows-latest,    compiler: Clang }
+          - { os: windows-latest,    compiler: MinGW }
 
-        # Windows ARM64
-        - os: windows-11-arm
-          compiler: MSVC
+          # Windows ARM64
+          - { os: windows-11-arm,    compiler: MSVC }
+          - { os: windows-11-arm,    compiler: Clang }
 
-        # macOS (Apple Silicon / x86 depending on runner)
-        - os: macos-latest
-          compiler: AppleClang
+          # macOS (Apple Silicon)
+          - { os: macos-latest,      compiler: Clang }
+          - { os: macos-latest,      compiler: AppleClang }
     steps:
       - name: checkout
         uses: actions/checkout@v4
