@@ -10,7 +10,7 @@ on:
 
 jobs:
   test_builds:
-    name: Test on ${{ matrix.os }}
+    name: ${{ matrix.os }} ( ${{ matrix.compiler }} )
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -47,7 +47,7 @@ jobs:
           gitdeps_args: -e omplayer
       # deps
       - name: install deps
-        if: ${{ os.runner == 'Linux' }}
+        if: ${{ runner.os == 'Linux' }}
         run: |
           sudo apt-get update 
           sudo apt-get install -y cmake build-essential ninja-build libsdl2-dev libavcodec-dev libavutil-dev libavformat-dev ffmpeg libpipewire-0.3-dev nasm libxtst-dev libx11-dev libxext-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxss-dev libxfixes-dev libxrender-dev
@@ -97,7 +97,7 @@ jobs:
           echo "CXX=g++" >> $env:GITHUB_ENV
 
       # cmake
-      - name: cmake build part ( ${{ matrix.os }} ) with compiler ( ${{ matrix.compiler }} )
+      - name: cmake build part ( ${{ matrix.os }} )
         run: cmake -B build -GNinja -DAUI_BOOT=OFF -DOPENMEDIA_INSTALL=OFF -DOPENMEDIA_EXAMPLE_PLAYER=ON -DCMAKE_BUILD_TYPE=RelWithDebugInfo
 
       # compile
