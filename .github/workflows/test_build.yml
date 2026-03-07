@@ -23,3 +23,17 @@ jobs:
         uses: Nelonn/gitdeps@v0.2.3
         with:
           gitdeps_ver: 0.2.3
+
+      - name: install deps
+        if: ${{ matrix.os == 'ubuntu-latest'}}
+        run: |
+          apt update 
+          sudo apt-get install -y cmake build-essential ninja-build libsdl3-dev libavcodec-dev libavutil-dev libavformat-dev ffmpeg libpipewire-0.3-dev
+
+      - name: cmake build part
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: cmake -B build -GNinja -DOPENMEDIA_JPEG=OFF -DOPENMEDIA_INSTALL=OFF -DOPENMEDIA_WEBP=OFF -DOPENMEDIA_EXAMPLE_PLAYER=ON -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release
+
+      - name: try to compile
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: cmake --build build
