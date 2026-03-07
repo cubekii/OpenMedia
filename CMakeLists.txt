@@ -5,9 +5,9 @@ include(Options.cmake)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-#file(DOWNLOAD
-#        https://raw.githubusercontent.com/aui-framework/aui/f7dc2fc157ff91f36bfa203f67840a5e7fed4632/aui.boot.cmake
-#        ${CMAKE_CURRENT_BINARY_DIR}/aui.boot.cmake)
+file(DOWNLOAD
+        https://raw.githubusercontent.com/aui-framework/aui/f7dc2fc157ff91f36bfa203f67840a5e7fed4632/aui.boot.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/aui.boot.cmake)
 include(${CMAKE_CURRENT_BINARY_DIR}/aui.boot.cmake)
 
 set(CMAKE_CXX_STANDARD 20)
