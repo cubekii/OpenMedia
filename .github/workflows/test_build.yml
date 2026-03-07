@@ -16,6 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, ubuntu-24.04-arm, windows-11-arm, windows-latest, macos-latest]
+        compiler: ["Default", "Clang"]
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -33,13 +34,30 @@ jobs:
           sudo apt-get install -y cmake build-essential ninja-build libsdl2-dev libavcodec-dev libavutil-dev libavformat-dev ffmpeg libpipewire-0.3-dev nasm libxtst-dev libx11-dev libxext-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxss-dev libxfixes-dev libxrender-dev
 
       - name: Clang Toolchain Installation for Linux
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: matrix.compiler == 'Clang' && runner.os == 'Linux'
         run: |
           wget https://apt.llvm.org/llvm.sh
           chmod +x llvm.sh
           sudo ./llvm.sh 20 all
           echo "CC=clang-20" >> $GITHUB_ENV
           echo "CXX=clang++-20" >> $GITHUB_ENV
+
+      - name: Install MacOS dependencies
+        if: runner.os == 'macOS'
+        run: brew install cmake ninja llvm@18
+
+      - name: Setup Clang 18 for macOS
+        if: matrix.compiler == 'Clang' && runner.os == 'macOS'
+        run: |
+          echo "CC=$(brew --prefix llvm@18)/bin/clang " >> $GITHUB_ENV
+          echo "CXX=$(brew --prefix llvm@18)/bin/clang++ " >> $GITHUB_ENV
+
+      - name: Setup AppleClang for macOS
+        if: matrix.compiler == 'Default' && runner.os == 'macOS'
+        run: |
+          echo "CC=/usr/bin/clang " >> $GITHUB_ENV
+          echo "CXX=/usr/bin/clang++ " >> $GITHUB_ENV
+
       # cmake
       - name: cmake build part ( ${{ matrix.os }} )
         run: cmake -B build -GNinja -DAUI_BOOT=OFF -DOPENMEDIA_INSTALL=OFF -DOPENMEDIA_EXAMPLE_PLAYER=ON -DCMAKE_BUILD_TYPE=RelWithDebugInfo
