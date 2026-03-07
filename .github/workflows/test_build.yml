@@ -32,7 +32,7 @@ jobs:
 
       - name: cmake build part
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: cmake -B build -GNinja -DOPENMEDIA_JPEG=OFF -DOPENMEDIA_INSTALL=OFF -DOPENMEDIA_WEBP=OFF -DOPENMEDIA_EXAMPLE_PLAYER=ON -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release
+        run: cmake -B build -GNinja -DAUI_BOOT=OFF -DOPENMEDIA_JPEG=OFF -DOPENMEDIA_INSTALL=OFF -DOPENMEDIA_WEBP=OFF -DOPENMEDIA_EXAMPLE_PLAYER=ON -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release
 
       - name: try to compile
         if: ${{ matrix.os == 'ubuntu-latest' }}
