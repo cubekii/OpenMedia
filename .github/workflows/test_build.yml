@@ -31,9 +31,18 @@ jobs:
           sudo apt-get update 
           sudo apt-get install -y cmake build-essential ninja-build libsdl2-dev libavcodec-dev libavutil-dev libavformat-dev ffmpeg libpipewire-0.3-dev nasm libxtst-dev libx11-dev libxext-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxss-dev libxfixes-dev libxrender-dev
 
+      - name: Clang Toolchain Installation for Linux
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+          wget https://apt.llvm.org/llvm.sh
+          chmod +x llvm.sh
+          sudo ./llvm.sh 20 all
+          echo "CC=clang-20" >> $GITHUB_ENV
+          echo "CXX=clang++-20" >> $GITHUB_ENV
+
       - name: cmake build part
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: cmake -B build -GNinja -DAUI_BOOT=OFF -DOPENMEDIA_INSTALL=OFF -DOPENMEDIA_EXAMPLE_PLAYER=ON -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_ASM_NASM_COMPILER=nasm -DCMAKE_BUILD_TYPE=Release
+        run: cmake -B build -GNinja -DAUI_BOOT=OFF -DOPENMEDIA_JPEG=OFF -DOPENMEDIA_INSTALL=OFF -DOPENMEDIA_EXAMPLE_PLAYER=ON -DCMAKE_ASM_NASM_COMPILER=nasm -DCMAKE_BUILD_TYPE=Release
 
       - name: try to compile
         if: ${{ matrix.os == 'ubuntu-latest' }}
