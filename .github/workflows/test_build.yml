@@ -58,6 +58,13 @@ jobs:
           echo "CC=/usr/bin/clang " >> $GITHUB_ENV
           echo "CXX=/usr/bin/clang++ " >> $GITHUB_ENV
 
+      - name: Install Clang for Windows
+        if: matrix.compiler == 'Clang' && runner.os == 'Windows'
+        run: |
+          choco install llvm --version=20.1.0 -y
+          echo "CC=clang" >> $env:GITHUB_ENV
+          echo "CXX=clang++" >> $env:GITHUB_ENV
+
       # cmake
       - name: cmake build part ( ${{ matrix.os }} )
         run: cmake -B build -GNinja -DAUI_BOOT=OFF -DOPENMEDIA_INSTALL=OFF -DOPENMEDIA_EXAMPLE_PLAYER=ON -DCMAKE_BUILD_TYPE=RelWithDebugInfo
