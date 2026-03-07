@@ -52,15 +52,16 @@ jobs:
           sudo apt-get update 
           sudo apt-get install -y cmake build-essential ninja-build libsdl2-dev libavcodec-dev libavutil-dev libavformat-dev ffmpeg libpipewire-0.3-dev nasm libxtst-dev libx11-dev libxext-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxss-dev libxfixes-dev libxrender-dev
 
-      # ── Linux: Clang 20 ──────────────────────────────────────────────
-      - name: Install Clang 20 (Linux)
+      # ── Linux: Clang 21 ──────────────────────────────────────────────
+      - name: Install Clang 21 (Linux)
         if: matrix.compiler == 'Clang' && runner.os == 'Linux'
         run: |
           wget https://apt.llvm.org/llvm.sh
           chmod +x llvm.sh
-          sudo ./llvm.sh 20 all
-          echo "CC=clang-20"   >> $GITHUB_ENV
-          echo "CXX=clang++-20" >> $GITHUB_ENV
+          sudo ./llvm.sh 21 all
+          echo "CC=clang-21"   >> $GITHUB_ENV
+          echo "CXX=clang++-21" >> $GITHUB_ENV
+
 
       # ── Linux: GCC ───────────────────────────────────────────────────
       - name: Install GCC (Linux)
@@ -71,22 +72,26 @@ jobs:
           echo "CC=gcc"   >> $GITHUB_ENV
           echo "CXX=g++" >> $GITHUB_ENV
 
-      # ── macOS: общие зависимости ─────────────────────────────────────
-      - name: Install macOS dependencies
-        if: runner.os == 'macOS'
-        run: brew install cmake ninja
-
-      # ── macOS: AppleClang (системный, /usr/bin) ──────────────────────
+      # ── macOS: AppleClang
       - name: Setup AppleClang (macOS)
         if: matrix.compiler == 'AppleClang' && runner.os == 'macOS'
         run: |
           echo "CC=/usr/bin/clang"   >> $GITHUB_ENV
           echo "CXX=/usr/bin/clang++" >> $GITHUB_ENV
 
-      # ── Windows: MSVC (уже доступен на runner, только задаём генератор) ─
+        # ── Clang: LLVM через Homebrew ──
+      - name: Setup LLVM Clang
+        if: matrix.compiler == 'Clang' && runner.os == 'macOS'
+        run: |
+          brew install llvm
+          LLVM_PREFIX=$(brew --prefix llvm)
+          echo "CC=${LLVM_PREFIX}/bin/clang"    >> $GITHUB_ENV
+          echo "CXX=${LLVM_PREFIX}/bin/clang++" >> $GITHUB_ENV
+
+      # ── Windows: MSVC
       - name: Setup MSVC (Windows)
         if: matrix.compiler == 'MSVC' && runner.os == 'Windows'
-        uses: ilammy/msvc-dev-cmd@v1   # настраивает cl.exe в PATH
+        uses: ilammy/msvc-dev-cmd@v1
 
       # ── Windows: MinGW (GCC-toolchain) ──────────────────────────────
       - name: Setup MinGW (Windows)
@@ -95,6 +100,14 @@ jobs:
           choco install mingw -y
           echo "CC=gcc"   >> $env:GITHUB_ENV
           echo "CXX=g++" >> $env:GITHUB_ENV
+
+      # ── Windows: Clang (LLVM-toolchain) ─────────────────────────────
+      - name: Setup Clang (Windows)
+        if: matrix.compiler == 'Clang' && runner.os == 'Windows'
+        run: |
+          choco install llvm -y
+          echo "CC=clang"   >> $env:GITHUB_ENV
+          echo "CXX=clang++" >> $env:GITHUB_ENV
 
       # cmake
       - name: cmake build part ( ${{ matrix.os }} )
