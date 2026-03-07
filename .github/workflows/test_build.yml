@@ -46,4 +46,4 @@ jobs:
 
       - name: try to compile
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: cmake --build build
+        run: cmake --build build --target omplayer
