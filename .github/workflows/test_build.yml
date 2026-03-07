@@ -98,7 +98,7 @@ jobs:
 
       # cmake
       - name: cmake build part ( ${{ matrix.os }} )
-        run: cmake -B build -GNinja -DAUI_BOOT=OFF -DOPENMEDIA_INSTALL=OFF -DOPENMEDIA_EXAMPLE_PLAYER=ON -DCMAKE_BUILD_TYPE=RelWithDebugInfo
+        run: cmake -B build -GNinja -DAUI_BOOT=OFF -DOPENMEDIA_INSTALL=OFF -DOPENMEDIA_EXAMPLE_PLAYER=ON -DCMAKE_BUILD_TYPE=RelWithDebugInfo -DOPENMEDIA_VORBIS=OFF
 
       # compile
       - name: try to compile
